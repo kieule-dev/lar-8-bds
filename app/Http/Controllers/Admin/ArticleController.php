@@ -30,13 +30,19 @@ class ArticleController extends Controller
 
         $items              = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
 
+        $categoryModel  = new CategoryModel();
+        $itemsCategory  = $categoryModel->listItems(null, ['task' => 'admin-list-items-in-selectbox']);
+     
+
+
     //    dd($items);
         $itemsStatusCount   = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
 
         return view($this->pathViewController .  'index', [
             'params'           => $this->params,
             'items'            => $items,
-            'itemsStatusCount' => $itemsStatusCount
+            'itemsStatusCount' => $itemsStatusCount,
+            'itemsCategory' => $itemsCategory,
         ]);
     }
 
@@ -63,14 +69,14 @@ class ArticleController extends Controller
         if ($request->method() == 'POST') {
             
             $params = $request->all();
-            dd($params);
+            // dd($params);
 
             $task   = "add-item";
-            $notify = "Thêm phần tử thành công!";
+            $notify = "Add item successfully!";
 
             if ($params['id'] !== null) {
                 $task   = "edit-item";
-                $notify = "Cập nhật phần tử thành công!";
+                $notify = "Update item successfully!";
             }
             $this->model->saveItem($params, ['task' => $task]);
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
@@ -92,7 +98,8 @@ class ArticleController extends Controller
 
     public function type(Request $request)
     {
-        $params["currentType"]    = $request->type;
+       
+        $params["category_id"]    = $request->type;
         $params["id"]             = $request->id;
         $this->model->saveItem($params, ['task' => 'change-type']);
         return response()->json([
@@ -104,6 +111,6 @@ class ArticleController extends Controller
     {
         $params["id"]             = $request->id;
         $this->model->deleteItem($params, ['task' => 'delete-item']);
-        return redirect()->route($this->controllerName)->with('zvn_notify', 'Xóa phần tử thành công!');
+        return redirect()->route($this->controllerName)->with('zvn_notify', 'Delete item successfully!');
     }
 }

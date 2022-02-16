@@ -8,10 +8,12 @@
 
     $statusValue      = ['default' => 'Select status', 'active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
 
-    $inputHiddenID    = Form::hidden('id', @$item['id']);
+    $inputHiddenID     = Form::hidden('id', @$item['id']);
     $inputHiddenAvatar = Form::hidden('avatar_current', @$item['avatar']);
-    $inputHiddenTask  = Form::hidden('task', 'edit-info');
-    $elements = [
+    // $inputHiddenTask   = Form::hidden('task', 'edit-info');
+    $inputHiddenTask   = '<input type="hidden" name="task" value="edit-info">';
+
+    $elements          = [
         [
             'label'   => Form::label('username', 'UserName', $formLabelAttr),
             'element' => Form::text('username', @$item['username'], $formInputAttr )
@@ -24,10 +26,15 @@
         ],[
             'label'   => Form::label('status', 'Status', $formLabelAttr),
             'element' => Form::select('status', $statusValue, @$item['status'], $formInputAttr)
-        ],[
+        ],
+        [
+            'label'   => Form::label('phone', 'Phone', $formLabelAttr),
+            'element' => Form::text('phone', @$item['phone'],  $formInputAttr )
+        ],
+        [
             'label'   => Form::label('avatar', 'Avatar', $formLabelAttr),
             'element' => Form::file('avatar', $formInputAttr ),
-            'avatar'   => (!empty(@$item['id'])) ? Template::showItemThumb($controllerName, @$item['avatar'], @$item['name']) : null ,
+            'avatar'   => (!empty(@$item['id'])) ? Template::showItemThumb2($controllerName, @$item['avatar'], @$item['name']) : null ,
             'type'    => "avatar"
         ],[
             'element' => $inputHiddenID . $inputHiddenAvatar . $inputHiddenTask . Form::submit('Save', ['class'=>'btn btn-success']),

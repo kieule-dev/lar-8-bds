@@ -26,14 +26,15 @@ class UserController extends Controller
         $this->params['filter']['status'] = $request->input('filter_status', 'all');
         $this->params['search']['field']  = $request->input('search_field', ''); // all id description
         $this->params['search']['value']  = $request->input('search_value', '');
-
+        
         $items              = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
         $itemsStatusCount   = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
+        // dd(123);
 
         return view($this->pathViewController .  'index', [
-            'params'        => $this->params,
-            'items'         => $items,
-            'itemsStatusCount' =>  $itemsStatusCount
+            'params'           => $this->params,
+            'items'            => $items,
+            'itemsStatusCount' => $itemsStatusCount
         ]);
     }
 
@@ -56,11 +57,11 @@ class UserController extends Controller
             $params = $request->all();
 
             $task   = "add-item";
-            $notify = "Thêm phần tử thành công!";
+            $notify = "Add success element!";
 
             if ($params['id'] !== null) {
                 $task   = "edit-item";
-                $notify = "Cập nhật phần tử thành công!";
+                $notify = "Update success element!";
             }
             $this->model->saveItem($params, ['task' => $task]);
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
@@ -85,7 +86,7 @@ class UserController extends Controller
         if ($request->method() == 'POST') {
             $params = $request->all();
             $this->model->saveItem($params, ['task' => 'change-level-post']);
-            return redirect()->route($this->controllerName)->with("zvn_notify", "Thay đổi level thành công!");
+            return redirect()->route($this->controllerName)->with("zvn_notify", "Successful level change!");
         }
     }
 
@@ -94,7 +95,7 @@ class UserController extends Controller
         if ($request->method() == 'POST') {
             $params = $request->all();
             $this->model->saveItem($params, ['task' => 'change-password']);
-            return redirect()->route($this->controllerName)->with("zvn_notify", "Thay đổi mật khẩu thành công!");
+            return redirect()->route($this->controllerName)->with("zvn_notify", "Successful password change!");
         }
     }
 
@@ -112,6 +113,6 @@ class UserController extends Controller
     {
         $params["id"]             = $request->id;
         $this->model->deleteItem($params, ['task' => 'delete-item']);
-        return redirect()->route($this->controllerName)->with('zvn_notify', 'Xóa phần tử thành công!');
+        return redirect()->route($this->controllerName)->with('zvn_notify', 'Delete success element!');
     }
 }

@@ -39,6 +39,7 @@ class CategoryController extends Controller
 
     public function form(Request $request)
     {
+      
         $item = null;
         if ($request->id !== null) {
             $params["id"] = $request->id;
@@ -52,6 +53,7 @@ class CategoryController extends Controller
 
     public function save(MainRequest $request)
     {
+       
         if ($request->method() == 'POST') {
             $params = $request->all();
 

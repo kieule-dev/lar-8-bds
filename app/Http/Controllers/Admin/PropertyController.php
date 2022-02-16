@@ -59,6 +59,7 @@ class PropertyController extends Controller
 
         if ($request->method() == 'POST') {
             $params = $request->all();
+            // dd($params);
 
             $task   = "add-item";
             $notify = "Add success element";

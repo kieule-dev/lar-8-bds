@@ -7,7 +7,8 @@
     $formLabelAttr = config('zvn.template.form_label_edit');
 
     $inputHiddenID    = Form::hidden('id', @$item['id']);
-    $inputHiddenTask  = Form::hidden('task', 'change-password');
+    // $inputHiddenTask  = Form::hidden('task', 'change-password');
+    $inputHiddenTask   = '<input type="hidden" name="task" value="change-password">';
 
     $elements = [
         [
@@ -17,7 +18,7 @@
             'label'   => Form::label('password_confirmation', 'Password Confirmation ', $formLabelAttr),
             'element' => Form::password('password_confirmation', $formInputAttr),
         ],[
-            'element' => $inputHiddenID . $inputHiddenTask . Form::submit('Save', ['class'=>'btn btn-success']),
+            'element' => $inputHiddenID . $inputHiddenTask . Form::submit('Save', ['class'=>'btn btn-success', 'name'=>'change-password']),
             'type'    => "btn-submit-edit"
         ]
     ];
@@ -34,7 +35,7 @@
                 'accept-charset' => 'UTF-8',
                 'enctype'        => 'multipart/form-data',
                 'class'          => 'form-horizontal form-label-left',
-                'id'             => 'main-form' ])  }}
+                'id'             => 'main-form-change-password'])  }}
                 {!! FormTemplate::show($elements)  !!}
             {{ Form::close() }}
         </div>

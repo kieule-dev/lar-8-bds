@@ -35,19 +35,19 @@ class PropertyRequest extends FormRequest
             $condName  .= ",$id";
         }
         return [
-            'name'        => $condName,
-            'type'        => 'bail|in:apartment,house',
-            'description' => 'bail|required|min:5',
-            'purpose'     => 'bail|in:sell,lease',
-            'bed'         => 'bail|required|min:1',
-            'bath'        => 'bail|required|min:1',
-            'area'        => 'bail|required|min:1|max:10',
-            'price'       => 'bail|required|min:1',
-            'city'        => 'bail|required|min:1',
-            'video'       => 'bail|required|min:5|url',
-            'address'     => 'bail|required|min:1',
-            'status'      => 'bail|in:active,inactive',
-            'image'       => $condThumb
+            // 'name'        => $condName,
+            // 'type'        => 'bail|in:apartment,house',
+            // 'description' => 'bail|required|min:5',
+            // 'purpose'     => 'bail|in:sell,lease',
+            // 'bed'         => 'bail|required|min:1',
+            // 'bath'        => 'bail|required|min:1',
+            // 'area'        => 'bail|required|min:1|max:10',
+            // 'price'       => 'bail|required|min:1',
+            // 'city'        => 'bail|required|min:1',
+            // 'video'       => 'bail|required|min:5|url',
+            // 'address'     => 'bail|required|min:1',
+            // 'status'      => 'bail|in:active,inactive',
+            // 'image'       => $condThumb
         ];
     }
 

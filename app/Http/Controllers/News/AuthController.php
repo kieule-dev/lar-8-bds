@@ -35,7 +35,7 @@ class AuthController extends Controller
             $userInfo = $userModel->getItem($params, ['task' => 'auth-login']);
            
             if (!$userInfo)
-                return redirect()->route($this->controllerName . '/login')->with('news_notify', 'Tài khoản hoặc mật khẩu không chính xác!');
+                return redirect()->route($this->controllerName . '/login')->with('news_notify', 'Incorrect account or password!');
 
             $request->session()->put('userInfo', $userInfo);
             return redirect()->route('home');

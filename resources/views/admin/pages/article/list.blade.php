@@ -34,9 +34,10 @@
                             $view            = $val['view'];
                             $comment         = 2;
                             $name            = Hightlight::show($val['name'], $params['search'], 'name');
+                            $thumb           = Template::showItemThumb($controllerName, $val['image'], $val['name']);;
                             $description     = Hightlight::show($val['short_description'], $params['search'], 'short_description');
                             $status          = Template::showItemStatus($controllerName, $id, $val['status']);
-                            $type            = Template::showItemSelect($controllerName, $id, $val['type'], 'type');
+                            $type            = Template::showItemSelect1($controllerName, $id, $itemsCategory, 'type', $val['category_name']);
                             $createdHistory  = Template::showItemHistory($val['created_by'], $val['created_at']);
                             $modifiedHistory = Template::showItemHistory($val['updated_by'], $val['updated_at']);
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
@@ -47,6 +48,7 @@
                             <td width="30%">
                                 <p><strong>Name:</strong> {!! $name !!}</p>
                                 <p><strong>Description:</strong> {!! $description !!}</p>
+                                <p>{!! $thumb !!}</p>
                             </td>
                             {{-- <td width="14%">
                                 <p>{!! $thumb !!}</p>

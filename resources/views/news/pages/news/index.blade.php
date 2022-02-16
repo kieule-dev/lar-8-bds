@@ -29,7 +29,7 @@
                     @foreach ($posts as $item)
                     <div class="col-lg-6 col-md-6">
                         <div class="blog-item bottom-30">
-                            <a href="{{--    --}}"><img src="{{ asset('upload/post') }}/{{ $item->image }}"
+                            <a href="{{--    --}}"><img src="{{ asset('images/article') }}/{{ $item->image }}"
                                 style="height: 320px !important;" alt="{{ $item->name }}"></a>
                             <div class="blog-content">
                                 <span><a href="{{--      --}}">{{ $item->category->name }}</a></span>

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\AdminModel;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use DB; 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 class UserModel extends AdminModel
 {
     public function __construct() {
@@ -81,7 +81,7 @@ class UserModel extends AdminModel
         $result = null;
         
         if($options['task'] == 'get-item') {
-            $result = self::select('id', 'username', 'email', 'status', 'fullname', 'level', 'avatar')->where('id', $params['id'])->first();
+            $result = self::select('id', 'username', 'email', 'status', 'fullname', 'level', 'avatar', 'phone')->where('id', $params['id'])->first();
         }
 
         if($options['task'] == 'get-avatar') {
@@ -89,7 +89,7 @@ class UserModel extends AdminModel
         }
 
         if($options['task'] == 'auth-login') {
-            $result = self::select('id', 'username', 'fullname', 'email', 'level', 'avatar')
+            $result = self::select('id', 'username', 'fullname', 'email', 'level', 'avatar', 'phone')
                     ->where('status', 'active')
                     ->where('email', $params['email'])
                     ->where('password', md5($params['password']) )->first();
@@ -107,8 +107,8 @@ class UserModel extends AdminModel
         }
 
         if($options['task'] == 'add-item') {
-            $params['created_by'] = "hailan";
-            $params['created']    = date('Y-m-d');
+            $params['created_by'] = "kerry";
+            $params['created']    = date(config('zvn.format.db'));
             $params['avatar']      = $this->uploadThumb($params['avatar']);
             $params['password']    = md5($params['password']);
             self::insert($this->prepareParams($params));        
@@ -119,8 +119,8 @@ class UserModel extends AdminModel
                 $this->deleteThumb($params['avatar_current']);
                 $params['avatar'] = $this->uploadThumb($params['avatar']);
             }
-            $params['modified_by']   = "hailan";
-            $params['modified']      = date('Y-m-d');
+            $params['modified_by']   = "kerry";
+            $params['modified']      = date(config('zvn.format.db'));
             self::where('id', $params['id'])->update($this->prepareParams($params));
         }
 

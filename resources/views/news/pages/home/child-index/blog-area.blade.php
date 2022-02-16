@@ -9,7 +9,7 @@
 
 
                 <div class="blog-item">
-                    <a href="{{-- {{ route('news.detail',['slug' => $post->slug]) }} --}}"><img src="{{ asset('upload/post') }}/{{ $post->image }}"
+                    <a href="{{-- {{ route('news.detail',['slug' => $post->slug]) }} --}}"><img src="{{ asset('images/article') }}/{{ $post->image }}"
                             style="height: 320px !important;" alt="{{ $post->name }}"></a>
                     <div class="blog-content">
                         <span><a href="{{-- {{ route('news.detail',['slug' => $post->slug]) }} --}}">{{ $post->category->name }}</a></span>

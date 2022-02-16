@@ -17,8 +17,6 @@ $prefixNews  = config('zvn.url.prefix_news');
 
 
 
-
-
 Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => ['permission.admin']], function () {
 
     // ============================== DASHBOARD ==============================
@@ -28,6 +26,8 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         $controller = ucfirst($controllerName)  . 'Controller@';
         Route::get('/',                             [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
     });
+
+
     // ============================== DASHBOARD ==============================
     $prefix         = 'dashboard';
     $controllerName = 'dashboard';
@@ -35,6 +35,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         $controller = ucfirst($controllerName)  . 'Controller@';
         Route::get('/',                             [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
     });
+
 
     //============================== SLIDER ==============================
     $prefix         = 'slider';
@@ -47,6 +48,34 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         Route::get('delete/{id}',                   [ 'as' => $controllerName . '/delete',      'uses' => $controller . 'delete'])->where('id', '[0-9]+');
         Route::get('change-status-{status}/{id}',   [ 'as' => $controllerName . '/status',      'uses' => $controller . 'status'])->where('id', '[0-9]+');
     });
+
+
+    //============================== Companies ==============================
+    $prefix         = 'companies';
+    $controllerName = 'companies';
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/',                             [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
+        Route::get('form/{id?}',                    [ 'as' => $controllerName . '/form',        'uses' => $controller . 'form'])->where('id', '[0-9]+');
+        Route::post('save',                         [ 'as' => $controllerName . '/save',        'uses' => $controller . 'save']);
+        Route::get('delete/{id}',                   [ 'as' => $controllerName . '/delete',      'uses' => $controller . 'delete'])->where('id', '[0-9]+');
+        Route::get('change-status-{status}/{id}',   [ 'as' => $controllerName . '/status',      'uses' => $controller . 'status'])->where('id', '[0-9]+');
+    });
+
+
+    //============================== Facilities ==============================
+    $prefix         = 'facilities';
+    $controllerName = 'facilities';
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/',                             [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
+        Route::get('form/{id?}',                    [ 'as' => $controllerName . '/form',        'uses' => $controller . 'form'])->where('id', '[0-9]+');
+        Route::post('save',                         [ 'as' => $controllerName . '/save',        'uses' => $controller . 'save']);
+        Route::get('delete/{id}',                   [ 'as' => $controllerName . '/delete',      'uses' => $controller . 'delete'])->where('id', '[0-9]+');
+        Route::get('change-status-{status}/{id}',   [ 'as' => $controllerName . '/status',      'uses' => $controller . 'status'])->where('id', '[0-9]+');
+    });
+
+
 
     $prefix         = 'property';
     $controllerName = 'property';
@@ -69,7 +98,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         Route::post('save',                             [ 'as' => $controllerName . '/save',        'uses' => $controller . 'save']);
         Route::get('delete/{id}',                       [ 'as' => $controllerName . '/delete',      'uses' => $controller . 'delete'])->where('id', '[0-9]+');
         Route::get('change-status-{status}/{id}',       [ 'as' => $controllerName . '/status',      'uses' => $controller . 'status'])->where('id', '[0-9]+');
-        Route::get('change-is-home-{is_home}/{id}',      [ 'as' => $controllerName . '/isHome',     'uses' => $controller . 'isHome'])->where('id', '[0-9]+');
+        Route::get('change-is-home-{is_home}/{id}',     [ 'as' => $controllerName . '/isHome',     'uses' => $controller . 'isHome'])->where('id', '[0-9]+');
         Route::get('change-display-{display}/{id}',     [ 'as' => $controllerName . '/display',     'uses' => $controller . 'display']);
     });
 
@@ -88,28 +117,23 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
 
 
 
-
-
-
-
-
-
-
-
     // ============================== USER ==============================
     $prefix         = 'user';
     $controllerName = 'user';
     Route::group(['prefix' =>  $prefix], function () use($controllerName) {
         $controller = ucfirst($controllerName)  . 'Controller@';
-        Route::get('/',                                 [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
-        Route::get('form/{id?}',                        [ 'as' => $controllerName . '/form',        'uses' => $controller . 'form'])->where('id', '[0-9]+');
-        Route::post('save',                             [ 'as' => $controllerName . '/save',        'uses' => $controller . 'save']);
-        Route::post('change-password',                  [ 'as' => $controllerName . '/change-password',        'uses' => $controller . 'changePassword']);
-        Route::post('change-level',                     [ 'as' => $controllerName . '/change-level',        'uses' => $controller . 'changeLevel']);
-        Route::get('delete/{id}',                       [ 'as' => $controllerName . '/delete',      'uses' => $controller . 'delete'])->where('id', '[0-9]+');
-        Route::get('change-status-{status}/{id}',       [ 'as' => $controllerName . '/status',      'uses' => $controller . 'status']);
-        Route::get('change-level-{level}/{id}',         [ 'as' => $controllerName . '/level',      'uses' => $controller . 'level']);
+        Route::get('/',                                 [ 'as' => $controllerName,                      'uses' => $controller . 'index' ]);
+        Route::get('form/{id?}',                        [ 'as' => $controllerName . '/form',            'uses' => $controller . 'form'])->where('id', '[0-9]+');
+        Route::post('save',                             [ 'as' => $controllerName . '/save',            'uses' => $controller . 'save']);
+        Route::post('change-password',                  [ 'as' => $controllerName . '/change-password', 'uses' => $controller . 'changePassword']);
+        Route::post('change-level',                     [ 'as' => $controllerName . '/change-level',    'uses' => $controller . 'changeLevel']);
+        Route::get('delete/{id}',                       [ 'as' => $controllerName . '/delete',          'uses' => $controller . 'delete'])->where('id', '[0-9]+');
+        Route::get('change-status-{status}/{id}',       [ 'as' => $controllerName . '/status',          'uses' => $controller . 'status']);
+        Route::get('change-level-{level}/{id}',         [ 'as' => $controllerName . '/level',           'uses' => $controller . 'level']);
     });
+
+
+
 
     // ============================== RSS ==============================
     $prefix         = 'rss';

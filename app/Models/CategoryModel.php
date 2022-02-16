@@ -119,17 +119,18 @@ class CategoryModel extends AdminModel
        
 
         if ($options['task'] == 'add-item') {
-            $params['created_at'] = date('Y-m-d');
+          
+            $params['created_at'] = date(config('zvn.format.db'));
             $params['created_by'] = "kerry";
-            $params['updated_at'] = date('Y-m-d');
+            $params['updated_at'] = date(config('zvn.format.db'));
             $params['updated_by'] = "kerry";
             $params['slug']       = Str::slug( $params['name']).'-'.Carbon::now()->timestamp;
             self::insert($this->prepareParams($params));
         }
 
         if ($options['task'] == 'edit-item') {
-            $params['updated_by']   = "kerry";
-            $params['updated_at']      = date('Y-m-d');
+            $params['updated_by'] = "kerry";
+            $params['updated_at'] = date(config('zvn.format.db'));
             $params['slug']       = Str::slug( $params['name']).'-'.Carbon::now()->timestamp;
             self::where('id', $params['id'])->update($this->prepareParams($params));
         }

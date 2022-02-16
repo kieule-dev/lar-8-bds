@@ -11,8 +11,13 @@ return [
         'db'         => 'Y-m-d H:i:s',
     ],
     'template'         => [
+
         'form_input' => [
             'class' => 'form-control col-md-6 col-xs-12'
+        ],
+        'form_input_imgs' => [
+            'class' => 'form-control col-md-6 col-xs-12',
+            'multiple' => '',
         ],
         'form_label' => [
             'class' => 'control-label col-md-3 col-sm-3 col-xs-12'
@@ -28,8 +33,8 @@ return [
             'all'      => ['name' => 'Tất cả', 'class' => 'btn-success'],
             'active'   => ['name' => 'Active', 'class'      => 'btn-success'],
             'inactive' => ['name' => 'Inactive', 'class' => 'btn-info'],
-            'block' => ['name' => 'Bị khóa', 'class' => 'btn-danger'],
-            'default'      => ['name' => 'Chưa xác định', 'class' => 'btn-success'],
+            'block'    => ['name' => 'Bị khóa', 'class' => 'btn-danger'],
+            'default'  => ['name' => 'Chưa xác định', 'class' => 'btn-success'],
         ],
         'type'       => [
             'apartment' => ['name' => 'Apartment', 'class' => 'btn-success'],
@@ -41,25 +46,19 @@ return [
             'lease'     => ['name' => 'Lease', 'class'      => 'btn-info'],
             'default'   => ['name' => 'Chưa xác định', 'class' => 'btn-success'],
         ],
-        'is_home'       => [
-            'yes'      =>  ['name'=> 'Hiển thị', 'class'=> 'btn-primary'],
-            'no'        => ['name'=> 'Không hiển thị', 'class'=> 'btn-warning']
-        ],
-        'display'       => [
-            'list'      => ['name'=> 'Danh sách'],
-            'grid'      => ['name'=> 'Lưới'],
-        ],
+       
+       
         // 'type' => [
         //     'featured'   => ['name'=> 'Nổi bật'],
         //     'normal'     => ['name'=> 'Bình thường'],
         // ],
-        'rss_source' => [
-            'vnexpress'   => ['name'=> 'VNExpress'],
-            'tuoitre'     => ['name'=> 'Tuổi Trẻ'],
-        ],
+        // 'rss_source' => [
+        //     'vnexpress'   => ['name'=> 'VNExpress'],
+        //     'tuoitre'     => ['name'=> 'Tuổi Trẻ'],
+        // ],
         'level'       => [
-            'admin'      => ['name'=> 'Quản trị hệ thống'],
-            'member'      => ['name'=> 'Người dùng bình thường'],
+            'admin'  => ['name'=> 'Admin'],
+            'member' => ['name'=> 'Member'],
         ],
         'search'       => [
             'all'           => ['name'=> 'Search by All'],
@@ -83,6 +82,8 @@ return [
     'config' => [
         'search' => [
             'default'   => ['all', 'id', 'fullname'],
+            'companies' => ['all', 'id'],
+            'facilities'=> ['all', 'id'],
             'slider'    => ['all', 'id', 'name', 'description', 'link'],
             'category'  => ['all', 'name'],
             'article'   => ['all', 'name', 'content'],
@@ -92,10 +93,12 @@ return [
         'button' => [
             'default'   => ['edit', 'delete'],
             'slider'    => ['edit', 'delete'],
-            'property'    => ['edit', 'delete'],
+            'companies' => ['edit', 'delete'],
+            'facilities' => ['edit', 'delete'],
+            'property'  => ['edit', 'delete'],
             'category'  => ['edit', 'delete'],
             'article'   => ['edit', 'delete'],
-            'rss'   => ['edit', 'delete'],
+            'rss'       => ['edit', 'delete'],
             'user'      => ['edit'],
         ]
     ]

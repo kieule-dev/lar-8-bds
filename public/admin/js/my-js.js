@@ -124,7 +124,7 @@ $(document).ready(function () {
             url: url,
             dataType: "json",
             success: function (response) {
-                ele.notify("Cập nhật thành công", {
+                ele.notify("Update successfully", {
                     position: "top center",
                     className: "success",
                 });

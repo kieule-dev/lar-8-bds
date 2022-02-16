@@ -3,15 +3,18 @@
     use App\Helpers\Form as FormTemplate;
     use App\Helpers\Template;
 
-    $formInputAttr = config('zvn.template.form_input');
-    $formLabelAttr = config('zvn.template.form_label');
+    $formInputAttr     = config('zvn.template.form_input');
+    $formInputAttrImgs = config('zvn.template.form_input_imgs');
+    $formLabelAttr     = config('zvn.template.form_label');
 
     $statusValue      = ['default' => 'Select status', 'active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
     $typeValue        = ['default' => 'Select type', 'apartment' => config('zvn.template.type.apartment.name'), 'house' => config('zvn.template.type.house.name')];
     $purposeValue     = ['default' => 'Select purpose', 'sell' => config('zvn.template.purpose.sell.name'), 'lease' => config('zvn.template.purpose.lease.name')];
 
-    $inputHiddenID    = Form::hidden('id', @$item['id']);
-    $inputHiddenThumb = Form::hidden('thumb_current', @$item['image']);
+    $inputHiddenID          = Form::hidden('id', @$item['id']);
+    $inputHiddenThumb       = Form::hidden('thumb_current', @$item['image']);
+    $inputHiddenThumbDesign = Form::hidden('thumb_design', @$item['design']);
+    $inputHiddenThumbAlbum  = Form::hidden('thumb_album', @$item['album']);
 
   
 
@@ -75,7 +78,19 @@
             'type'    => "thumb"
         ],
         [
-            'element' => $inputHiddenID . $inputHiddenThumb . Form::submit('Save', ['class'=>'btn btn-success']),
+            'label'   => Form::label('design', 'Design', $formLabelAttr),
+            'element' => Form::file('design', $formInputAttr ),
+            'thumb'   => (!empty(@$item['id'])) ? Template::showItemThumb($controllerName, @$item['design'], @$item['name']) : null ,
+            'type'    => "thumb"
+        ],
+        [
+            'label'   => Form::label('album', 'Album', $formLabelAttr),
+            'element' => Form::file('album[]', $formInputAttrImgs),
+            'thumb'   => (!empty(@$item['id'])) ? Template::showItemThumbs($controllerName, @$item['album'], @$item['name']) : null ,
+            'type'    => "thumb"
+        ],
+        [
+            'element' => $inputHiddenID . $inputHiddenThumb . $inputHiddenThumbDesign. $inputHiddenThumbAlbum. Form::submit('Save', ['class'=>'btn btn-success']),
             'type'    => "btn-submit"
         ]
     ];

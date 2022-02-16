@@ -13,6 +13,8 @@
     $inputHiddenAvatar = Form::hidden('avatar_current', @$item['avatar']);
     $inputHiddenTask  = Form::hidden('task', 'add');
 
+    // dd($item['username']);
+
     $elements = [
         [
             'label'   => Form::label('username', 'UserName', $formLabelAttr),
@@ -20,10 +22,16 @@
         ],[
             'label'   => Form::label('email', 'Email', $formLabelAttr),
             'element' => Form::text('email', @$item['email'],  $formInputAttr )
-        ],[
+        ],
+        [
             'label'   => Form::label('fullname', 'Fullname', $formLabelAttr),
             'element' => Form::text('fullname', @$item['fullname'],  $formInputAttr )
-        ],[
+        ],
+        [
+            'label'   => Form::label('phone', 'Phone', $formLabelAttr),
+            'element' => Form::text('phone', @$item['phone'],  $formInputAttr )
+        ],
+        [
             'label'   => Form::label('password', 'Password', $formLabelAttr),
             'element' => Form::password('password', $formInputAttr),
         ],[

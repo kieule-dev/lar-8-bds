@@ -8,6 +8,9 @@ use App\Models\User;
 use App\Models\Slider;
 use App\Models\Message;
 use App\Models\Property;
+use App\Models\Companies;
+use App\Models\Facilities;
+
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -31,16 +34,14 @@ class HomeController extends Controller
     public function index()
     {
         $properties = Property::where('status','active')->paginate(6);
+        $companies  = Companies::where('status','active')->paginate(10);
+        $facilities = Facilities::where('status','active')->paginate(6);
         $city       = Property::select('city','image','city_slug')->get()->groupBy('city_slug')->toArray();
-         
-        // dd($city);
-      
         $posts      = Post::paginate(6);
         $type       = Property::select('type')->distinct('type')->get();
-        $slider     = Slider::select('thumb', 'name')->where('status','active')->get();
-      
+        $slider     = Slider::select('thumb', 'name')->where('status','active')->get();      
         
-        return view('news.pages.home.index',compact('properties','city','posts','type', 'slider'));
+        return view('news.pages.home.index',compact('properties', 'companies','facilities', 'city','posts','type', 'slider'));
     }
 
 
@@ -53,8 +54,7 @@ class HomeController extends Controller
     public function property (Request $request) {
 
         $value = $request->session()->get('userInfo');
-
-       
+        
         if ($value != null)
             return view('news.pages.user.property');
         return redirect()->route('auth/login');

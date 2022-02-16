@@ -32,14 +32,15 @@ class PropertyController extends Controller
 
     public function detail ($slug) {
         $property = Property::where('slug',$slug)->first();
-        $images = PropertyImage::where('property_id',$property->id)->get();
-        $video = $this->convertYoutube($property->video);
-        $tags = Tag::all();
-        $hots = Property::orderBy('view','DESC')->limit(5)->get();
+        // $images   = PropertyImage::where('property_id',$property->id)->get();
+       
+        $video    = $this->convertYoutube($property->video);
+        $tags     = Tag::all();
+        $hots     = Property::orderBy('view','DESC')->limit(5)->get();
         $property->increment('view');
 
 
-        return view('detail',compact('property','images','video','tags','hots'));
+        return view('news.pages.property.detail',compact('property','video','tags','hots'));
     }
 
     public function search () {

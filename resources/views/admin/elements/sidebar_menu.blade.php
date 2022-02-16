@@ -17,12 +17,13 @@
         <ul class="nav side-menu">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-home"></i> Dashboard</a></li>
             <li><a href="{{ route('slider') }}"><i class="fa fa-sliders"></i> Silders</a></li>
-            <li><a href="{{ route('category') }}"><i class="fa fa fa-building-o"></i> Category</a></li>
+            <li><a href="{{ route('companies') }}"><i class="fa fa-building"></i> Companies</a></li>
             <li><a href="{{ route('property') }}"><i class="fa fa-home"></i> Property</a></li>
+            <li><a href="{{ route('facilities') }}"><i class="fa fa-cogs"></i> Facilities</a></li>
+            <li><a href="{{ route('category') }}"><i class="fa fa fa-building-o"></i> Category</a></li>
             <li><a href="{{ route('article') }}"><i class="fa fa-newspaper-o"></i> Article</a></li>
-
-
-            {{-- <li><a href="{{ route('user') }}"><i class="fa fa-user"></i> User</a></li>
+            <li><a href="{{ route('user') }}"><i class="fa fa-user"></i> User</a></li>
+            
             {{-- <li><a href="{{ route('rss') }}"><i class="fa fa-newspaper-o"></i> Rss</a></li> --}}
         </ul>
     </div>

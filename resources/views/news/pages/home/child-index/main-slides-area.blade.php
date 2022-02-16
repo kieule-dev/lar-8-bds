@@ -1,9 +1,20 @@
+@php
+$sl = null;
+@endphp
+@foreach ($slider as $item)
+    @php
+        $sl .= sprintf('<img src="%s" alt="%s"> ', asset("images/slider/$item->thumb"), $item->name);
+    @endphp
+@endforeach
 <div class="main-slides-area">
     <div class="home-slides owl-carousel owl-theme">
 
         @foreach ($slider as $item)
-            <img src='{{ asset("images/slider/$item->thumb") }}' alt="{{ $item->name }}">
+            <img src="{{ asset("images/slider/$item->thumb") }}" alt="{{ $item->name }}">
         @endforeach
+
+
+        {{-- {!! $sl !!} --}}
 
     </div>
     <div class="main-slides-content">
@@ -34,8 +45,6 @@
                                                 <select name="city">
                                                     <option value="">Location</option>
                                                     @foreach ($city as $index => $item)
-
-
                                                         <option value="{{ $item[0]['city_slug'] }}">
                                                             {{ $item[0]['city'] }}
                                                         </option>
@@ -51,7 +60,6 @@
                                                 <select name="type">
                                                     <option value="">Type of apartment </option>
                                                     @foreach ($type as $item)
-
                                                         <option value="{{ $item->type }}">{{ $item->type }}</option>
                                                     @endforeach
                                                 </select>

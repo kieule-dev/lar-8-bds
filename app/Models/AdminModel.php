@@ -32,6 +32,17 @@ class AdminModel extends Model
         $thumbObj->storeAs($this->folderUpload, $thumbName, 'zvn_storage_image' );
         return $thumbName;
     }
+    public function uploadThumbs($thumbObj) {
+        $arrName = [];
+        foreach ($thumbObj as $key => $value) {
+            $thumbName       = Str::random(10) . '.' . $value->clientExtension();
+            $value->storeAs($this->folderUpload, $thumbName, 'zvn_storage_image' );
+            array_push($arrName, $thumbName);
+
+        }
+
+        return $arrName;
+    }
 
     public function deleteThumb($thumbName){
         Storage::disk('zvn_storage_image')->delete($this->folderUpload . '/' . $thumbName);

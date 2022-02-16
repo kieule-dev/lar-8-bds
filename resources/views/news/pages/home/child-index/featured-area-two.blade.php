@@ -7,19 +7,19 @@
             @foreach ($properties as $item)
                 <div class="featured-item with-white-color">
                     <div class="featured-image">
-                        <a href="{{-- {{ route('property.detail',['slug' => $item->slug]) }} --}}"><img src="{{ asset('images/property') }}/{{ $item->image }}"
+                        <a href="{{ route('property.detail',['slug' => $item->slug]) }}"><img src="{{ asset('images/property') }}/{{ $item->image }}"
                                 style="height: 320px !important;" alt="{{ $item->name }}"></a>
-                        <div class="price">{{ number_format($item->price) }}/m<sup>2</sup></div>
+                        <div class="price">$ {{ number_format($item->price) }}</div>
                     </div>
                     <div class="featured-top-content">
                         <span>{{ $item->address }}</span>
                         <h3>
                             <a href="{{-- {{ route('property.detail',['slug' => $item->slug]) }} --}}">{{ $item->name }}</a>
                         </h3>
-                        <p>{{ $item->type }} <span>({{ $item->area }}/m<sup>2</sup> )</span></p>
+                        <p>{{ $item->type }} <span>({{ $item->area }} m<sup>2</sup> )</span></p>
                         <ul class="featured-list">
-                            <li><i class='bx bx-bed'></i> {{ $item->bed }} Bedroom</li>
-                            <li><i class='bx bxs-bath'></i> {{ $item->bath }} Bathroom</li>
+                            <li><i class='bx bx-bed'></i> {{ $item->bed }} Bedrs</li>
+                            <li><i class='bx bxs-bath'></i> {{ $item->bath }} Baths</li>
                             <li><i class='bx bxs-city'></i> {{ $item->city }}</li>
                         </ul>
                     </div>

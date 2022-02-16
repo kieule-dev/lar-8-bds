@@ -22,22 +22,22 @@
                 <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                     <ul class="navbar-nav m-auto">
                         <li class="nav-item">
-                            <a href="{{ route('home') }}" class="nav-link {{ Request::is('news69') ? 'active' : '' }}">
+                            <a href="{{ route('home') }}" class="nav-link {{ Request::is('home') ? 'active' : '' }}">
                                 Home
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('property')}}" class="nav-link {{  Request::is('news69/property') ? 'active' : ''  }}">
+                            <a href="{{route('property.index')}}" class="nav-link {{  Request::is('home/property') ? 'active' : ''  }}">
                                 Property
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('news')}}" class="nav-link {{  Request::is('news69/news') ? 'active' : ''  }}">
+                            <a href="{{route('news')}}" class="nav-link {{  Request::is('home/news') ? 'active' : ''  }}">
                                 News
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('contact')}}" class="nav-link {{  Request::is('news69/contact') ? 'active' : ''  }}">Contact</a>
+                            <a href="{{route('contact')}}" class="nav-link {{  Request::is('home/contact') ? 'active' : ''  }}">Contact</a>
                         </li>
                     </ul>
                     <div class="others-options d-flex align-items-center">                            
