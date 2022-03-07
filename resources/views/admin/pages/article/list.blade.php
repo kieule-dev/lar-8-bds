@@ -10,8 +10,7 @@
                     <th class="column-title">#</th>
                     <th class="column-title">Article Info</th>
                     <th class="column-title">Slug</th>
-                    {{-- <th class="column-title">Category</th> --}}
-                    <th class="column-title">Type category</th>
+                    <th class="column-title">Category</th>
                     <th class="column-title">View</th>
                     <th class="column-title">Comment</th>
                     <th class="column-title">Status</th>
@@ -25,8 +24,6 @@
                     @foreach ($items as $key => $val)
                         @php
 
-                            // dd($items->all());
-
                             $index           = $key + 1;
                             $class           = ($index % 2 == 0) ? "even" : "odd";
                             $id              = $val['id'];
@@ -34,8 +31,9 @@
                             $view            = $val['view'];
                             $comment         = 2;
                             $name            = Hightlight::show($val['name'], $params['search'], 'name');
-                            $thumb           = Template::showItemThumb($controllerName, $val['image'], $val['name']);;
-                            $description     = Hightlight::show($val['short_description'], $params['search'], 'short_description');
+                            $thumb           = Template::showItemThumb1($controllerName, $val['image'], $val['name'], 250, 120);;
+                            // $description     = Hightlight::show($val['short_description'], $params['search'], 'short_description');
+                            $description     = substr($val['short_description'], 0, 100); 
                             $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             $type            = Template::showItemSelect1($controllerName, $id, $itemsCategory, 'type', $val['category_name']);
                             $createdHistory  = Template::showItemHistory($val['created_by'], $val['created_at']);
@@ -45,15 +43,11 @@
 
                         <tr class="{{ $class }} pointer">
                             <td >{{ $index }}</td>
-                            <td width="30%">
+                            <td width="20%">
                                 <p><strong>Name:</strong> {!! $name !!}</p>
-                                <p><strong>Description:</strong> {!! $description !!}</p>
+                                <p><strong>Description:</strong> {!! $description !!} ...</p>
                                 <p>{!! $thumb !!}</p>
                             </td>
-                            {{-- <td width="14%">
-                                <p>{!! $thumb !!}</p>
-                            </td> --}}
-                            {{-- <td >{!! $categoryName !!}</td> --}}
                             <td>{!! $slug   !!}</td>
                             <td>{!! $type   !!}</td>
                             <td>{!! $view   !!}</td>

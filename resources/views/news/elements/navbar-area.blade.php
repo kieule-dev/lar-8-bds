@@ -7,7 +7,7 @@
             <div class="main-responsive-menu">
                 <div class="logo">
                     <a href="/">
-                        <img src="{{ asset('assets/images/black-logo.png') }}" alt="logo">
+                        <img src="{{ asset('images/black-logo.png') }}" alt="logo">
                     </a>
                 </div>
             </div>
@@ -17,7 +17,7 @@
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-light">
                 <a class="navbar-brand" href="/">
-                    <img src="{{ asset('assets/images/black-logo.png') }}" alt="logo">
+                    <img src="{{ asset('images/black-logo.png') }}" alt="logo">
                 </a>
                 <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                     <ul class="navbar-nav m-auto">
@@ -36,6 +36,10 @@
                                 News
                             </a>
                         </li>
+                       
+                        <li class="nav-item">
+                            <a href="{{route('property.citys')}}" class="nav-link {{  Request::is('home/property/citys/all') ? 'active' : ''  }}">City</a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{route('contact')}}" class="nav-link {{  Request::is('home/contact') ? 'active' : ''  }}">Contact</a>
                         </li>
@@ -49,7 +53,7 @@
                                 @if(Route::has('auth/login'))
                                     @if (Session::get('userInfo') != null)    
                                       
-                                        @if (true)                                        
+                                        @if (Session::get('userInfo')['level']=='admin')                                        
                                             <a href="{{ route('dashboard') }}">
                                                 <i class='bx bxs-dashboard'></i>
                                             </a>
@@ -60,20 +64,20 @@
                                                         <i class='bx bxs-dashboard'></i>
                                                     </a>
                                                     <ul class="dropdown-menu">
+                                                        {{-- <li class="nav-item">
+                                                            <a href="{{ route('user.dashboard') }}" class="nav-link">Overview</a>
+                                                        </li> --}}
                                                         <li class="nav-item">
-                                                            <a href="{{-- {{ route('user.dashboard') }} --}}" class="nav-link">Tổng quan</a>
+                                                            <a href="{{ route('home.profile') }}" class="nav-link">Info User</a>
                                                         </li>
+                                                        {{-- <li class="nav-item">
+                                                            <a href="{{ route('user.changepwd') }}" class="nav-link">Change Password</a>
+                                                        </li> --}}
                                                         <li class="nav-item">
-                                                            <a href="{{-- {{ route('user.profile') }} --}}" class="nav-link">Hồ sơ</a>
+                                                            <a href="{{ route('auth/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                                                            class="nav-link">Log Out</a>
                                                         </li>
-                                                        <li class="nav-item">
-                                                            <a href="{{-- {{ route('user.changepwd') }} --}}" class="nav-link">Đổi mật khẩu</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a href="{{-- {{ route('logout') }} --}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-                                                            class="nav-link">Đăng xuất</a>
-                                                        </li>
-                                                        <form action="{{-- {{ route('logout') }} --}}" id="logout-form" method="post">
+                                                        <form action="{{ route('auth/logout') }}" id="logout-form" method="get">
                                                             @csrf
                                                         </form>
                                                     </ul>

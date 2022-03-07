@@ -20,12 +20,9 @@ class NotifyController extends Controller
 
     public function noPermission(Request $request)
     {   
-        $articleModel  = new ArticleModel();
-        $itemsLatest   = $articleModel->listItems(null, ['task'  => 'news-list-items-latest']);
+       
 
-        return view($this->pathViewController .  'no-permission', [
-            'itemsLatest'   => $itemsLatest,
-        ]);
+        return view($this->pathViewController .  'no-permission');
     }
 
 }

@@ -26,6 +26,7 @@ class AuthLoginRequest extends FormRequest
     {
         return [
             'email'    => 'bail|required|email',
+            // 'phone'    => 'bail|required|integer',
             'password' => 'bail|required|between: 5,100'    // thường, in hoa, số, ký tự đặt biệt
             // đổi pass: 
             // register

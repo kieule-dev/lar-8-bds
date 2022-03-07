@@ -9,13 +9,13 @@
                 <li>
                     <a href="/">Home</a>
                 </li>
-                {{-- <li>Trang</li> --}}
+              
                 <li>Post</li>
             </ul>
         </div>
     </div>
     <div class="page-banner-image wow fadeInRight" data-wow-delay="300ms" data-wow-duration="2000ms">
-        <img src="{{ asset('assets/images/page-banner.png') }}" alt="image">
+        <img src="{{ asset('images/page-banner.png') }}" alt="image">
     </div>
 </div>
 
@@ -26,13 +26,13 @@
                 <div class="alert alert-success">{{ Session::get('message') }}</div>
             @endif
         <div class="submit-property-form">
-            <form action="{{-- {{ route('user.store') }} --}}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row justify-content-center">
                     <div class="col-lg-12 col-md-12">
                         <div class="form-group">
                             <label>Name of the apartment </label>
-                            <input type="text" name="name" class="form-control">
+                            <input value="{{ old('name') }}" type="text" name="name" class="form-control">
                             @error('name')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -41,7 +41,7 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="form-group">
                             <label>Acreage</label>
-                            <input type="text" name="area" class="form-control">
+                            <input value="{{ old('area') }}" type="text" name="area" class="form-control">
                             @error('area')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -50,7 +50,7 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="form-group">
                             <label>Price (USD/m<sup>2</sup>)</label>
-                            <input type="text" name="price" class="form-control">
+                            <input value="{{ old('price') }}"  type="text" name="price" class="form-control">
                             @error('price')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -60,9 +60,9 @@
                         <div class="form-group">
                             <label>Type of apartment </label>
                             <select name="type">
-                                <option value="">-- Selected --</option>
-                                <option value="house">House</option>
-                                <option value="apartment">Apartment</option>
+                                <option value="" {{ old('type') == '' ? 'selected' : '' }}>-- Selected --</option>
+                                <option value="house" {{ old('type') == 'house' ? 'selected' : '' }} >House</option>
+                                <option value="apartment"{{ old('type') == 'apartment' ? 'selected' : '' }} >Apartment</option>
                             </select>
                             @error('type')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -73,9 +73,9 @@
                         <div class="form-group">
                             <label>Purpose</label>
                             <select name="purpose">
-                                <option value="">-- Selected --</option>
-                                <option value="sale">Sell</option>
-                                <option value="rent">Rent</option>
+                                <option value="" {{ old('purpose') == '' ? 'selected' : '' }}>-- Selected --</option>
+                                <option value="sale" {{ old('purpose') == 'sale' ? 'selected' : '' }}>Sell</option>
+                                <option value="rent" {{ old('purpose') == 'rent' ? 'selected' : '' }}>Rent</option>
                             </select>
                             @error('purpose')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -86,12 +86,12 @@
                         <div class="form-group">
                             <label>Bedroom</label>
                             <select name="bed">
-                                <option value="">-- Selected --</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value=""  {{ old('bed') == '' ? 'selected' : '' }}>-- Selected --</option>
+                                <option value="1"  {{ old('bed') == '1' ? 'selected' : '' }}>1</option>
+                                <option value="2"  {{ old('bed') == '2' ? 'selected' : '' }}>2</option>
+                                <option value="3"  {{ old('bed') == '3' ? 'selected' : '' }}>3</option>
+                                <option value="4"  {{ old('bed') == '4' ? 'selected' : '' }}>4</option>
+                                <option value="5"  {{ old('bed') == '5' ? 'selected' : '' }}>5</option>
                             </select>
                             @error('bed')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -102,12 +102,12 @@
                         <div class="form-group">
                             <label>Bathroom</label>
                             <select name="bath">
-                                <option value="">-- Selected --</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value=""{{ old('bath') == '' ? 'selected' : '' }}>-- Selected --</option>
+                                <option value="1"{{ old('bath') == '1' ? 'selected' : '' }}>1</option>
+                                <option value="2"{{ old('bath') == '2' ? 'selected' : '' }}>2</option>
+                                <option value="3"{{ old('bath') == '3' ? 'selected' : '' }}>3</option>
+                                <option value="4"{{ old('bath') == '4' ? 'selected' : '' }}>4</option>
+                                <option value="5"{{ old('bath') == '5' ? 'selected' : '' }}>5</option>
                             </select>
                             @error('bath')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -144,7 +144,7 @@
                     <div class="col-lg-12 col-md-6">
                         <div class="form-group">
                             <label>Link youtube</label>
-                            <input type="text" name="video" class="form-control">
+                            <input value="{{ old('video') }}"  type="text" name="video" class="form-control">
                             @error('video')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -153,7 +153,7 @@
                     <div class="col-lg-12 col-md-6">
                         <div class="form-group">
                             <label>Description of the apartment </label>
-                            <textarea id="description" rows="35" name="description" class="form-control"></textarea>
+                            <textarea  id="description" rows="35" name="description" class="form-control">{!! old('description') !!}</textarea>
                             @error('description')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -163,7 +163,7 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="form-group">
                             <label>Location </label>
-                            <input type="text" name="address" class="form-control">
+                            <input value="{{ old('address') }}"  type="text" name="address" class="form-control">
                             @error('address')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -172,7 +172,7 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="form-group">
                             <label>City</label>
-                            <input type="text" name="city" class="form-control">
+                            <input value="{{ old('city') }}" type="text" name="city" class="form-control">
                             @error('city')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror

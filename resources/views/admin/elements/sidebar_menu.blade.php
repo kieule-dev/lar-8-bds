@@ -23,6 +23,8 @@
             <li><a href="{{ route('category') }}"><i class="fa fa fa-building-o"></i> Category</a></li>
             <li><a href="{{ route('article') }}"><i class="fa fa-newspaper-o"></i> Article</a></li>
             <li><a href="{{ route('user') }}"><i class="fa fa-user"></i> User</a></li>
+            <li><a href="{{ route('message') }}"><i class="fa fa-commenting-o"></i> Message</a></li>
+            <li><a href="{{ route('setting') }}"><i class="fa fa-cog"></i> Setting</a></li>
             
             {{-- <li><a href="{{ route('rss') }}"><i class="fa fa-newspaper-o"></i> Rss</a></li> --}}
         </ul>

@@ -4,12 +4,13 @@ namespace App\Http\Controllers\News;
 
 use Carbon\Carbon;
 use App\Models\Post;
-use App\Models\User;
+use App\Models\User1;
 use App\Models\Slider;
 use App\Models\Message;
 use App\Models\Property;
 use App\Models\Companies;
 use App\Models\Facilities;
+use App\Models\Category;
 
 
 use Illuminate\Support\Str;
@@ -20,166 +21,235 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
+
+use App\Models\UserModel as MainModel;
+use App\Models\PropertyModel;
+use App\Http\Requests\UserRequest as MainRequest;
 
 class HomeController extends Controller
 {
+    private $params    = [];
+  
+
+
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
+    public function __construct()
+    {
+        $this->model = new MainModel();
+    }
+
+    public function uploadThumbs($thumbObj)
+    {
+        $arrName = [];
+        foreach ($thumbObj as $key => $value) {
+            $thumbName       = Str::random(10) . '.' . $value->clientExtension();
+            $value->storeAs('property', $thumbName, 'zvn_storage_image');
+            array_push($arrName, $thumbName);
+        }
+
+        return $arrName;
+    }
+    public function uploadThumb($thumbObj)
+    {
+        $thumbName        = Str::random(10) . '.' . $thumbObj->clientExtension();
+        $thumbObj->storeAs('user', $thumbName, 'zvn_storage_image');
+        return $thumbName;
+    }
+    public function deleteThumb($thumbName){
+        Storage::disk('zvn_storage_image')->delete( 'user/' . $thumbName);
+    }
 
     //======== INDEX =========
     public function index()
     {
-        $properties = Property::where('status','active')->paginate(6);
-        $companies  = Companies::where('status','active')->paginate(10);
-        $facilities = Facilities::where('status','active')->paginate(6);
-        $city       = Property::select('city','image','city_slug')->get()->groupBy('city_slug')->toArray();
-        $posts      = Post::paginate(6);
+        $properties = Property::where('status', 'active')->orderBy('id', 'DESC')->paginate(6);
+        $companies  = Companies::where('status', 'active')->paginate(10);
+        $facilities = Facilities::where('status', 'active')->paginate(6);
+        $city       = DB::table('properties')
+                        ->select(DB::raw('count(*) as total , city_slug, city, image'))
+                        ->groupBy('city_slug')
+                        ->limit(6)
+                        ->get()->toArray();
+                  
+        $posts      = Post::paginate(4);
+        $category   = Category::paginate(8);
+     
         $type       = Property::select('type')->distinct('type')->get();
-        $slider     = Slider::select('thumb', 'name')->where('status','active')->get();      
-        
-        return view('news.pages.home.index',compact('properties', 'companies','facilities', 'city','posts','type', 'slider'));
+        $slider     = Slider::select('thumb', 'name')->where('status', 'active')->get();
+
+        return view('news.pages.home.index', compact('properties', 'category', 'companies', 'facilities', 'city', 'posts', 'type', 'slider'));
     }
 
 
-    public function dashboard () {
-        $messages = Message::where('user_id',Auth::user()->id)->paginate(5);
-        $properties = Property::where('user_id',Auth::user()->id)->paginate(5);
-        return view('user.index',compact('messages','properties'));
+
+    public function search(Request $request)
+    {
+        $this->params['keyword']['field'] = 'keyword';                       //$request->input('keyword', '');  // all id description
+        $this->params['keyword']['value'] = $request->input('keyword', '');
+        $this->params['city']['field']    = 'city';                          //$request->input('city', '');
+        $this->params['city']['value']    = $request->input('city', '');
+        $this->params['type']['field']    = 'type';                          //$request->input('type', '');
+        $this->params['type']['value']    = $request->input('type', '');
+        $this->params['purpose']['field'] = 'purpose';                       //$request->input('type', '');
+        $this->params['purpose']['value'] = $request->input('purpose', '');
+
+
+
+        $propertyObj =  new PropertyModel();
+
+        $items              =  $propertyObj->listItems($this->params, ['task'  => 'news-list-items-search']);
+        // dd($items);
+
+        return view('news.pages.search.index', compact('items'));
     }
 
-    public function property (Request $request) {
+
+    public function dashboard()
+    {
+        $messages = Message::where('user_id', Auth::user()->id)->paginate(5);
+        $properties = Property::where('user_id', Auth::user()->id)->paginate(5);
+        return view('user.index', compact('messages', 'properties'));
+    }
+
+    public function property(Request $request)
+    {
 
         $value = $request->session()->get('userInfo');
-        
+
         if ($value != null)
             return view('news.pages.user.property');
         return redirect()->route('auth/login');
     }
 
-    public function profile () {
-        return view('user.profile');
+    public function profile()
+    {
+        return view('news.pages.user.profile');
     }
 
-    public function removeImage($file){
-        $path = public_path('upload/property/'.$file->image);
-        if(isset($path))
+    public function removeImage($file)
+    {
+        $path = public_path('upload/property/' . $file->image);
+        if (isset($path))
             unlink($path);
     }
 
-    public function removeProfilePath($file){
-        $path = public_path('upload/property/'.$file->profile_path);
-        if(isset($path))
+    public function removeProfilePath($file)
+    {
+        $path = public_path('upload/property/' . $file->profile_path);
+        if (isset($path))
             unlink($path);
     }
 
-    public function update (Request $request) {
+    public function update(Request $request)
+    {
         // dd($request->all());
         $request->validate([
             'profile_path' => 'image|mimes:jpeg,png,jpg,svg,gif|max:2048',
-            'name' => 'required',
-            'email' => 'email|required',
-            'phone' => 'required',
-            'address' => 'required',
-        ],[
-            'profile_path.image' => 'Nhập đúng định dạng của ảnh',
-            'profile_path.mimes' => 'Nhập đúng định dạng của ảnh',
-            'profile_path.max' => 'Kích thước hình ảnh quá lớn',
-            'name.required' => 'Tên của bạn không được trống',
-            'email.required' => 'Email của bạn không được trống',
-            'email.email' => 'Nhập đúng định dạng của email',
-            'address.required' => 'Địa chỉ của bạn không được trống',
-            'phone.required' => 'Điện thoại của bạn không được trống',
+            'name'         => 'required',
+            'email'        => 'email|required',
+            'phone'        => 'required',
+            'address'      => 'required',
         ]);
-        $user = User::find($request->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
-        $user->facebook = $request->facebook;
+        $user               = User1::find($request->id);
+
+        $params['fullname'] = $request->name;
+        $params['email']    = $request->email;
+        $params['phone']    = $request->phone;
+        $params['address']  = $request->address;
+        $params['facebook'] = $request->facebook;
+        $params['level']    = $user->level;
+        $params['id']       = $user->id;
+        $params['avatar']   = $user->avatar;
+        $params['username'] = $user->username;
+
+        // dd($request->all());
 
         if ($request->hasFile('profile_path')) {
-            if ($user->profile_path != 'no-image.png')
-                $this->removeProfilePath($user);
-            $imageName = $request->name.'-'.Carbon::now()->timestamp.'.'.$request->profile_path->extension(); 
-            $request->profile_path->storeAs('user',$imageName);
-            $user->profile_path = $imageName;
+            if ($user->avatar_current != 'no-image.png') {
+                $this->deleteThumb($request['avatar_current']);
+            }
+            $params['avatar'] = $this->uploadThumb($request['profile_path']);
+          
+          
         }
-
-        $user->save();
-        session()->flash('message','Cập nhật thông tin của bạn thành công !');
+        $params['modified_by']   = "kerry";
+        $params['modified']      = date(config('zvn.format.db'));
+       
+        DB::table('user')->where('id', $request->id)->update(($params));
+        $request->session()->put('userInfo', $params);
+        session()->flash('message', 'Update your information successfully!');
         return back();
     }
 
-    public function change (Request $request) {
+    public function change(Request $request)
+    {
         $request->validate([
             'pwd' => ['required', new MatchOldPassword],
             'new_pwd' => 'required|min:8',
             'confirm_pwd' => 'same:new_pwd',
-        ],[
+        ], [
             'pwd.required' => 'Mật khẩu hiện tại không được trống !',
             'new_pwd.required' => 'Mật khẩu mới không được trống !',
             'new_pwd.min' => 'Mật khẩu mới ít nhất 8 ký tự !',
             'confirm_pwd.same' => 'Mật khẩu phải giống nhau!',
         ]);
-        User::find(Auth::user()->id)->update(['password' => Hash::make($request->new_pwd)]);
-        session()->flash('message','Mật khẩu của bạn đã được thay đổi !');
+        User1::find(Auth::user()->id)->update(['password' => Hash::make($request->new_pwd)]);
+        session()->flash('message', 'Mật khẩu của bạn đã được thay đổi !');
         return back();
     }
 
-    public function changepwd () {
+    public function changepwd()
+    {
         return view('user.change-password');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'type' => 'required',
-            'purpose' => 'required',
+            'name'        => 'required',
+            'type'        => 'required',
+            'purpose'     => 'required',
             'description' => 'required',
-            'bath' => 'required',
-            'bed' => 'required',
-            'area' => 'required',
-            'price' => 'required',
-            'city' => 'required',
-            'address' => 'required',
-            'image' => 'required|image|mimes:jpeg,jpg,png,svg,gif|max:2048', 
-            'floor_plan' => 'image|mimes:jpeg,jpg,png,svg,gif|max:2048', 
-        ],[
-            'name.required' => 'Tên căn hộ không được trống',
-            'type.required' => 'Loại căn hộ không được trống',
-            'purpose.required' => 'Mục đích không được trống',
+            'bath'        => 'required',
+            'bed'         => 'required',
+            'area'        => 'required',
+            'price'       => 'required',
+            'city'        => 'required',
+            'address'     => 'required',
+            'image'       => 'required|image|mimes:jpeg,jpg,png,svg,gif|max:2048',
+            'floor_plan'  => 'image|mimes:jpeg,jpg,png,svg,gif|max:2048',
+        ], [
+            'name.required'        => 'Tên căn hộ không được trống',
+            'type.required'        => 'Loại căn hộ không được trống',
+            'purpose.required'     => 'Mục đích không được trống',
             'description.required' => 'Mô tả không được trống',
-            'bath.required' => 'Số phòng tắm không được trống',
-            'bed.required' => 'Số phòng ngủ không được trống',
-            'area.required' => 'Diện tích không được trống',
-            'price.required' => 'Giá căn hộ không được trống',
-            'city.required' => 'Thành phố không được trống',
-            'address.required' => 'Địa điểm không được trống',
-            'image.required' => 'Hình ảnh địa diện không được trống',
-            'image.image' => 'Nhập đúng định dạng hình ảnh',
-            'image.mimes' => 'Nhập đúng loại hình ảnh',
-            'image.max' => 'Kích thước quá lớn',
-            'floor_plan.image' => 'Nhập đúng định dạng hình ảnh',
-            'floor_plan.mimes' => 'Nhập đúng loại hình ảnh',
-            'floor_plan.max' => 'Kích thước quá lớn',
+            'bath.required'        => 'Số phòng tắm không được trống',
+            'bed.required'         => 'Số phòng ngủ không được trống',
+            'area.required'        => 'Diện tích không được trống',
+            'price.required'       => 'Giá căn hộ không được trống',
+            'city.required'        => 'Thành phố không được trống',
+            'address.required'     => 'Địa điểm không được trống',
+            'image.required'       => 'Hình ảnh địa diện không được trống',
+            'image.image'          => 'Nhập đúng định dạng hình ảnh',
+            'image.mimes'          => 'Nhập đúng loại hình ảnh',
+            'image.max'            => 'Kích thước quá lớn',
+            'floor_plan.image'     => 'Nhập đúng định dạng hình ảnh',
+            'floor_plan.mimes'     => 'Nhập đúng loại hình ảnh',
+            'floor_plan.max'       => 'Kích thước quá lớn',
         ]);
         $property = new Property();
         $property->name = $request->name;
-        $property->slug = Str::slug($request->name).'-'.Carbon::now()->timestamp;
-        if ($request->type == "house")
-            $property->type = "Căn hộ";
-        else 
-            $property->type = "Chung cư";
+        $property->slug = Str::slug($request->name) . '-' . Carbon::now()->timestamp;
+        $property->type = $request->type;
         $property->type_slug = Str::slug($property->type);
-        if ($request->purpose == "sale") 
-            $property->purpose = "Bán";
-        else
-            $property->purpose = "Cho thuê";
+        $property->purpose = $request->purpose;
         $property->description = $request->description;
         $property->bed = $request->bed;
         $property->bath = $request->bath;
@@ -189,55 +259,60 @@ class HomeController extends Controller
         $property->city_slug = Str::slug($request->city);
         $property->address = $request->address;
         $property->video = $request->video;
-        $property->user_id = Auth::user()->id;
+        $property->user_id = session('userInfo')['id'];
 
         if ($request->hasFile('image')) {
-            $imageName = $property->slug.'.'.$request->image->extension();
-            $request->image->storeAs('property',$imageName);
-            $property->image = $imageName;
-        }
-        else 
+            $image = $this->uploadThumb($request->image);
+            $property->image = $image;
+        } else
             $property->image = "no-image.jpg";
 
         if ($request->hasFile('floor_plan')) {
-            $floor_plan = 'ban-thiet-ke'.'-'.Carbon::now()->timestamp.'.'.$request->floor_plan->extension();
-            $request->floor_plan->storeAs('property',$floor_plan);
-            $property->floor_plan = $floor_plan;
+            $design = $this->uploadThumb($request->floor_plan);
+            $property->design = $design;
+        }
+        if ($request->hasFile('images')) {
+            $property->album     = json_encode(array_values($this->uploadThumbs($request->images)));
         }
 
         $property->save();
-        
-        if ($request->hasFile('images')) {
-            foreach ($request->images as $item) {
-                $img = new PropertyImage();
-                $img->property_id = $property->id;
-                $name = Str::random(8).'-'.$item->extension();
-                $item->storeAs('property',$name);
-                $img->image = $name;
-                $img->save();
-            }
-        }
-        session()->flash('message','Thêm căn hộ thành công!');
+
+        session()->flash('message', 'Thêm căn hộ thành công!');
         return back();
     }
 
-    public function removeFloorPlan($file){
-        $path = public_path('upload/property/'.$file->floor_plan);
-        if(isset($path))
+    public function removeFloorPlan($file)
+    {
+        $path = public_path('upload/property/' . $file->floor_plan);
+        if (isset($path))
             unlink($path);
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $property = Property::find($id);
         $this->removeImage($property);
         $this->removeFloorPlan($property);
 
-        foreach (PropertyImage::where('property_id',$property->id)->get() as $item) {
+        foreach (PropertyImage::where('property_id', $property->id)->get() as $item) {
             $this->removeImage($item);
         }
 
         $property->delete();
-        session()->flash('message','Xóa căn hộ thành công !');
+        session()->flash('message', 'Xóa căn hộ thành công !');
         return back();
+    }
+
+    public function save(MainRequest $request)
+    {
+
+        if ($request->method() == 'POST') {
+
+            $params = $request->all();
+            $task   = "add-item";
+            $this->model->saveItem($params, ['task' => $task]);
+
+            return redirect()->route('auth/login')->with("zvn_notify", 'You have successfully registered. Please login');
+        }
     }
 }

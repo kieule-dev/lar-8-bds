@@ -18,14 +18,13 @@ class AuthController extends Controller
         view()->share('controllerName', $this->controllerName);
     }
 
+    //======== LOGIN =========
     public function login(Request $request)
     {   
         return view($this->pathViewController . 'login');
     }
 
-    // middelware
-    
-
+    //======== POST LOGIN =========
     public function postLogin(MainRequest $request)
     {   
         if ($request->method() == 'POST') {
@@ -42,13 +41,17 @@ class AuthController extends Controller
         }
     }
 
+    //======== LOGOUT =========
     public function logout(Request $request)
     {   
         if($request->session()->has('userInfo')) $request->session()->pull('userInfo');
         return redirect()->route('home');
     }
+
+    //======== REGISTER =========
     public function register(Request $request)
     {   
+      
         return view($this->pathViewController . 'register');
     }
 

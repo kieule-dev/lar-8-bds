@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="page-banner-image wow fadeInRight" data-wow-delay="300ms" data-wow-duration="2000ms">
-        <img src="{{ asset('assets/images/page-banner.png') }}" alt="image">
+        <img src="{{ asset('images/page-banner.png') }}" alt="image">
     </div>
 </div>
 
@@ -44,8 +44,8 @@
                         </h3>
                         <p>{{ $item->type }} <span>({{ $item->area }}/m<sup>2</sup>)</span></p>
                         <ul class="featured-list">
-                            <li><i class='bx bx-bed'></i> {{ $item->bed }} Phòng ngủ</li>
-                            <li><i class='bx bxs-bath'></i> {{ $item->bath }} Phòng tắm</li>
+                            <li><i class='bx bx-bed'></i> {{ $item->bed }} Beds</li>
+                            <li><i class='bx bxs-bath'></i> {{ $item->bath }} Baths</li>
                             <li><i class='bx bxs-city'></i> {{ $item->city }}</li>
                         </ul>
                     </div>

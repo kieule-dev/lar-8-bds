@@ -1,9 +1,5 @@
 @extends('news.main')
 
-@php
-    $userInfo = session('userInfo');
-    // dd($userInfo);
-@endphp
 
 @section('content')
     <div class="page-banner-area">
@@ -20,7 +16,7 @@
             </div>
         </div>
         <div class="page-banner-image wow fadeInRight" data-wow-delay="300ms" data-wow-duration="2000ms">
-            <img src="{{ asset('assets/images/page-banner.png') }}" alt="image">
+            <img src="{{ asset('images/page-banner.png') }}" alt="image">
         </div>
     </div>
 
@@ -46,16 +42,16 @@
                             <ul class="tag-list">
                                 <li class="tag">{{ $property->purpose }}</li>
                             </ul>
-                            <div class="price">{{ number_format($property->price) }} ₫</div>
+                            <div class="price">$ {{ number_format($property->price) }}</div>
                             <div class="content">
                                 <span>{{ $property->address }}</span>
                                 <h3>
                                     <a href="#">{{ $property->name }}</a>
                                 </h3>
-                                <p>{{ $property->type }} <span>({{ $property->area }}/m<sup>2</sup>)</span></p>
+                                <p>{{ $property->type }} <span>({{ $property->area }} m<sup>2</sup>)</span></p>
                                 <ul class="list">
-                                    <li><i class='bx bx-bed'></i> {{ $property->bed }} Bedroom</li>
-                                    <li><i class='bx bxs-bath'></i> {{ $property->bath }} Bathroom</li>
+                                    <li><i class='bx bx-bed'></i> {{ $property->bed }} Bedrs</li>
+                                    <li><i class='bx bxs-bath'></i> {{ $property->bath }} Baths</li>
                                 </ul>
                             </div>
                         </div>
@@ -68,7 +64,7 @@
                             <ul class="overview-list">
                                 <li>
                                     <i class='bx bxs-home'></i>
-                                    <p>Type of apartment </p>
+                                    <p>Category </p>
                                     <span>{{ $property->type }}</span>
                                 </li>
                                 <li>
@@ -78,12 +74,12 @@
                                 </li>
                                 <li>
                                     <i class='bx bxs-bed'></i>
-                                    <p>Bedroom</p>
+                                    <p>Beds</p>
                                     <span>{{ $property->bed }}</span>
                                 </li>
                                 <li>
                                     <i class='bx bxs-bath'></i>
-                                    <p>Bathroom</p>
+                                    <p>Baths</p>
                                     <span>{{ $property->bath }}</span>
                                 </li>
                                 <li>
@@ -110,12 +106,14 @@
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <aside class="widget-area">
+
+                        {{-- INFO-USER --}}
                         <div class="widget widget_info">
                             <div class="info-box-one">
-                                <img src="{{ asset('images/user') }}/{{ $userInfo['avatar'] }}" alt="{{ $userInfo['fullname'] }}">
-                                <h3>{{ $userInfo['fullname'] }}</h3>
-                                <span><i class='bx bxs-phone'></i> <a href="{{ $userInfo['phone'] }}">
-                                    {{ $userInfo['phone'] }}
+                                <img src="{{ asset('images/user') }}/{{ $infoUser->avatar }}" alt="{{ $infoUser->fullname}}">
+                                <h3>{{ $infoUser->fullname }}</h3>
+                                <span><i class='bx bxs-phone'></i> <a href="tel:{{ $infoUser->phone }}">
+                                    {{ $infoUser->phone }}
                                     </a></span>
                             </div>
                             <form>
@@ -138,9 +136,15 @@
                                     <label>Message</label>
                                     <textarea name="message" id="message" required class="form-control"></textarea>
                                 </div>
+
+                                <input type="hidden" name="slug" id="slug" value='123'>
+                                
                                 <a href="#" id="sendMessage" class="default-btn">Confirm<span></span></a>
                             </form>
                         </div>
+
+
+                        {{-- TOPIC --}}
                         <div class="widget widget_tag_cloud">
                             <h3 class="widget-title">Topic</h3>
                             <div class="tagcloud">
@@ -149,6 +153,10 @@
                                 @endforeach
                             </div>
                         </div>
+
+
+
+                        {{-- FEATURED APARTMENT --}}
                         <div class="widget widget_top-properties">
                             <h3 class="widget-title">Featured apartment </h3>
                             <div class="top-properties-slides owl-carousel owl-theme">
@@ -165,10 +173,10 @@
                                                         {{ $item->name }}
                                                     </a>
                                                 </h3>
-                                                <p>{{ number_format($item->price) }} đ</p>
+                                                <p>$ {{ number_format($item->price) }}</p>
                                                 <ul class="featured-list">
-                                                    <li><i class='bx bx-bed'></i> {{ $item->bed }} Bedroom</li>
-                                                    <li><i class='bx bxs-bath'></i> {{ $item->bath }} Bathroom</li>
+                                                    <li><i class='bx bx-bed'></i> {{ $item->bed }} Beds</li>
+                                                    <li><i class='bx bxs-bath'></i> {{ $item->bath }} Baths</li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -176,6 +184,9 @@
                                 @endforeach
                             </div>
                         </div>
+
+
+
                     </aside>
                 </div>
             </div>
@@ -198,7 +209,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/message/apartment",
+                    url: "message",
                     data: {
                         user_id: user_id,
                         property_id: property_id,
@@ -210,8 +221,8 @@
                     dataType: "json",
                     success: function(response) {
                         swal({
-                            title: "Thông báo",
-                            text: "Gửi tin nhắn thành công !",
+                            title: "Notify",
+                            text: "Message sent successfully!",
                             icon: 'success',
                             button: 'OK'
                         })

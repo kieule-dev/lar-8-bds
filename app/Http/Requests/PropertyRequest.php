@@ -24,30 +24,31 @@ class PropertyRequest extends FormRequest
      */
     public function rules()
     {
-      
-
+    
         $id = $this->id;
-        $condThumb = 'bail|required|image|max:500';
-        $condName  = "bail|required|between:5,100|unique:$this->table,name";
+        $condThumb = 'bail|required|image';
+        $condName  = "bail|required|between:1,100|unique:$this->table,name";
 
         if(!empty($id)){ // edit
-            $condThumb = 'bail|image|max:500';
+            $condThumb = 'bail|image';
             $condName  .= ",$id";
         }
         return [
-            // 'name'        => $condName,
-            // 'type'        => 'bail|in:apartment,house',
-            // 'description' => 'bail|required|min:5',
-            // 'purpose'     => 'bail|in:sell,lease',
-            // 'bed'         => 'bail|required|min:1',
-            // 'bath'        => 'bail|required|min:1',
-            // 'area'        => 'bail|required|min:1|max:10',
-            // 'price'       => 'bail|required|min:1',
-            // 'city'        => 'bail|required|min:1',
-            // 'video'       => 'bail|required|min:5|url',
-            // 'address'     => 'bail|required|min:1',
-            // 'status'      => 'bail|in:active,inactive',
-            // 'image'       => $condThumb
+            'name'        => $condName,
+            'category'    => 'bail|notIn:0',
+            'description' => 'bail|required|min:1',
+            'purpose'     => 'bail|in:sell,lease',
+            'bed'         => 'bail|required|min:1',
+            'bath'        => 'bail|required|min:1',
+            'area'        => 'bail|required|min:1|max:10',
+            'price'       => 'bail|required|min:1',
+            'city'        => 'bail|required|notIn:default',
+            'video'       => 'bail|required|min:5|url',
+            'address'     => 'bail|required|min:1',
+            'status'      => 'bail|in:active,inactive',
+            'image'       => $condThumb,
+            'design'      => $condThumb,
+            // 'album'       => $condThumb,
         ];
     }
 

@@ -12,6 +12,13 @@ img.zvn-thumb {
     margin-bottom: 10px;
 
 }
+img.zvn-thumb2 {
+    max-width: 100%;
+    height: 100px;
+    width: 200px;
+    margin-bottom: 10px;
+
+}
 img.zvn-thumb1 {
     max-width: 100%;
     border-radius: 50%;

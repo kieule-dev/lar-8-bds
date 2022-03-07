@@ -26,11 +26,11 @@ class CompaniesRequest extends FormRequest
     {
         $id = $this->id;
 
-        $condThumb = 'bail|required|image|max:5000';
+        $condThumb = 'bail|required|image';
         $condName  = "bail|required|between:5,100|unique:$this->table,name";
 
         if(!empty($id)){ // edit
-            $condThumb = 'bail|image|max:5000';
+            $condThumb = 'bail|image';
             $condName  .= ",$id";
         }
         return [

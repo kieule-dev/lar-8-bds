@@ -10,13 +10,13 @@
                 <li>
                     <a href="/">Home</a>
                 </li>
-                {{-- <li>Trang</li> --}}
+              
                 <li>Contact</li>
             </ul>
         </div>
     </div>
     <div class="page-banner-image wow fadeInRight" data-wow-delay="300ms" data-wow-duration="2000ms">
-        <img src="{{ asset('assets/images/page-banner.png') }}" alt="image">
+        <img src="{{ asset('images/page-banner.png') }}" alt="image">
     </div>
 </div>
 

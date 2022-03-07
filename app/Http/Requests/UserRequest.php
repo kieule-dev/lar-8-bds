@@ -24,8 +24,11 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->id;
-        $task   = $this->task;
+        $id   = $this->id;
+        $task = $this->task;
+
+        // dd($this->all());
+       
 
         $condAvatar   = '';
         $condUserName = '';
@@ -46,12 +49,12 @@ class UserRequest extends FormRequest
                 $condPhone      = 'bail|required|numeric';
                 $condStatus     = 'bail|in:active,inactive';
                 $condLevel      = 'bail|in:admin,member';
-                $condAvatar     = 'bail|required|image|max:500';
+                $condAvatar     = 'bail|required|image';
                 break;
             case 'edit-info':
                 $condUserName   = "bail|required|between:5,100|unique:$this->table,username,$id"; 
                 $condFullname   = 'bail|required|min: 5';
-                $condAvatar     = 'bail|image|max:500';
+                $condAvatar     = 'bail|image';
                 $condStatus     = 'bail|in:active,inactive';
                 $condEmail      = "bail|required|email|unique:$this->table,email,$id";
                 $condPhone      = 'bail|required|numeric';
@@ -62,6 +65,15 @@ class UserRequest extends FormRequest
                 break;
             case 'change-level':
                 $condLevel = 'bail|in:admin,member';
+                break;
+            case 'front-end':
+            
+                return [
+                    'username' => ['required', 'string', 'max:255'],
+                    'email'    => ['required', 'string', 'email', 'max:255', 'unique:user'],
+                    'password' => ['required', 'string', 'min:6', 'confirmed'],
+                ];
+
                 break;
             default:
                 break;

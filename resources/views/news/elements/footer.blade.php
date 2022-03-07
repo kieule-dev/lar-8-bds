@@ -8,7 +8,7 @@
                 <div class="single-footer-widget">
                     <div class="widget-logo">
                         <a href="index.html">
-                            <img src="{{ asset('assets/images/white-logo.png') }}" alt="image">
+                            <img src="{{ asset('images/white-logo.png') }}" alt="image">
                         </a>
                     </div>
                     <p>
@@ -37,23 +37,24 @@
                     @endif
                 </div>
             </div>
-           
             <div class="col-lg-3 col-md-6">
                 <div class="single-footer-widget">
-                    <h3>Links</h3>
-                    <ul class="widget-info">
-                        <li class='null'>
-                            <a href="/">Home</a>
-                        </li>
-                        <li class='null'>
-                            <a href="properties">Property</a>
-                        </li>
-                        <li class='null'>
-                            <a href="news">Blog</a>
-                        </li>
+                    <h3>Explore</h3>
+
+                    <ul class="footer-quick-links">
+                        <li><a href="#">ABOUT US</a></li>
+                        <li><a href="#">MEET OUR AGENTS</a></li>
+                        <li><a href="#">OUR SERVICES</a></li>
+                        <li><a href="#">PROPERTIES</a></li>
+                        <li><a href="#">APARTMENTS</a></li>
+                        <li><a href="#">HOUSE</a></li>
+                        <li><a href="#">VILLA</a></li>                     
+                        <li><a href="#">SELL OR RENT</a></li>
+                        <li><a href="#">New PROPERTIES</a></li>
                     </ul>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <div class="single-footer-widget">
                     <h3>Contact</h3>
@@ -75,6 +76,10 @@
                             @if ($setting)                                
                             <a href="mailto:{{ $setting->email }}">{{ $setting->email }}</a>
                             @endif
+                        </li>
+                        <li>
+                            <i class="bx bx-time"></i>
+                            {{ $setting->time }}
                         </li>
                     </ul>
                 </div>

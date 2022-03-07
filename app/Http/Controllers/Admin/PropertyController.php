@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\CategoryModel;
 use App\Models\PropertyModel as MainModel;
 use App\Http\Requests\PropertyRequest as MainRequest;
 
@@ -17,7 +18,7 @@ class PropertyController extends Controller
     public function __construct()
     {
         $this->model = new MainModel();
-        $this->params["pagination"]["totalItemsPerPage"] = 3;
+        $this->params["pagination"]["totalItemsPerPage"] = 20;
         view()->share('controllerName', $this->controllerName);
     }
 
@@ -47,10 +48,15 @@ class PropertyController extends Controller
             $item = $this->model->getItem($params, ['task' => 'get-item']);
         }
 
+        $categoryModel  = new CategoryModel();
+        $itemsCategory  = $categoryModel->listItems(null, ['task' => 'admin-list-items-in-selectbox1']);
+
        
+        array_unshift($itemsCategory,"Select category");
 
         return view($this->pathViewController .  'form', [
-            'item'        => $item
+            'item'          => $item,
+            'itemsCategory' => $itemsCategory
         ]);
     }
 
@@ -59,7 +65,6 @@ class PropertyController extends Controller
 
         if ($request->method() == 'POST') {
             $params = $request->all();
-            // dd($params);
 
             $task   = "add-item";
             $notify = "Add success element";
@@ -79,10 +84,10 @@ class PropertyController extends Controller
         $params["id"]             = $request->id;
         $this->model->saveItem($params, ['task' => 'change-status']);
         $status = $request->status == 'active' ? 'inactive' : 'active';
-        $link = route($this->controllerName . '/status', ['status' => $status, 'id' => $request->id]);
+        $link   = route($this->controllerName . '/status', ['status' => $status, 'id' => $request->id]);
         return response()->json([
             'statusObj' => config('zvn.template.status')[$status],
-            'link' => $link,
+            'link'      => $link,
         ]);
     }
 

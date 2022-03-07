@@ -36,12 +36,14 @@ class UserModel extends AdminModel
                 } else if(in_array($params['search']['field'], $this->fieldSearchAccepted)) { 
                     $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%" );
                 } 
-            }
+            }     
 
             $result =  $query->orderBy('id', 'desc')
                             ->paginate($params['pagination']['totalItemsPerPage']);
 
         }
+
+
 
     
 
@@ -89,7 +91,7 @@ class UserModel extends AdminModel
         }
 
         if($options['task'] == 'auth-login') {
-            $result = self::select('id', 'username', 'fullname', 'email', 'level', 'avatar', 'phone')
+            $result = self::select('id', 'username', 'email', 'fullname', 'avatar', 'level', 'phone', 'facebook', 'address')
                     ->where('status', 'active')
                     ->where('email', $params['email'])
                     ->where('password', md5($params['password']) )->first();
@@ -109,8 +111,16 @@ class UserModel extends AdminModel
         if($options['task'] == 'add-item') {
             $params['created_by'] = "kerry";
             $params['created']    = date(config('zvn.format.db'));
-            $params['avatar']      = $this->uploadThumb($params['avatar']);
+
+            if(isset($params['avatar'])){
+
+                $params['avatar']      = $this->uploadThumb($params['avatar']);
+            }
             $params['password']    = md5($params['password']);
+            $params['level']= $params['level']?? 'member';
+            $params['status']= $params['status']?? 'active';
+            $params['phone']= $params['phone'];
+            // dd($this->prepareParams($params));
             self::insert($this->prepareParams($params));        
         }
 

@@ -2,8 +2,11 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
+
 
 class Handler extends ExceptionHandler
 {
@@ -38,4 +41,6 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+  
 }

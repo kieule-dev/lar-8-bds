@@ -7,29 +7,14 @@
             <div class="row">
 
                 <!-- Main Content -->
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <div class="main_content">
-                        <h3>Bạn không có quyền truy cập vào chức năng này!! </h3>
+                        <h1 style="text-align: center; padding: 200px;">You do not have access to this function!! </h1>
                        
                     </div>
                 </div>
 
-                <!-- Sidebar -->
-                <div class="col-lg-3">
-                    <div class="sidebar">
-                        <!-- Latest Posts -->
-                        @include ('news.block.latest_posts', ['items' => $itemsLatest])
-
-                        <!-- Advertisement -->
-                        @include ('news.block.advertisement', ['itemsAdvertisement' => []])
-
-                        <!-- MostViewed -->
-                        @include ('news.block.most_viewed', ['itemsMostViewed' => []])
-
-                        <!-- Tags -->
-                        @include ('news.block.tags', ['itemsTags' => []])
-                    </div>
-                </div>
+               
 
             </div>
         </div>

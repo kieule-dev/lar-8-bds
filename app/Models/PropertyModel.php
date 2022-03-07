@@ -14,8 +14,8 @@ class PropertyModel extends AdminModel
     {
         $this->table               = 'properties';
         $this->folderUpload        = 'property';
-        $this->fieldSearchAccepted = ['id', 'name', 'description'];
-        $this->crudNotAccepted     = ['_token', 'thumb_current', 'thumb_design', 'thumb_album'];
+        $this->fieldSearchAccepted = ['name', 'city', 'address'];
+        $this->crudNotAccepted     = ['_token', 'thumb_current', 'thumb_design', 'thumb_album', 'category', 'idUser'];
     }
 
     //======== LIST ITEMS =========
@@ -47,12 +47,39 @@ class PropertyModel extends AdminModel
                 ->paginate($params['pagination']['totalItemsPerPage']);
         }
 
-        if ($options['task'] == 'news-list-items') {
-            $query = $this->select('id', 'name', 'description', 'link', 'thumb')
-                ->where('status', '=', 'active')
-                ->limit(5);
+        if ($options['task'] == 'news-list-items-search') {
+            // dd($params);
 
-            $result = $query->get()->toArray();
+
+
+            $query = $this->select('id', 'name', 'slug', 'description', 'bath', 'bed', 'area', 'city', 'city_slug', 'address', 'price', 'image', 'type', 'type_slug', 'purpose', 'floor_plan', 'video', 'view', 'user_id', 'created_at', 'created_by', 'updated_at', 'updated_by', 'status');
+
+            if ($params['city']['value'] !== "") {
+                $query->where($params['city']['field'], 'LIKE',  "%{$params['city']['value']}%");
+            }
+           
+            if ($params['type']['value'] !== "") {
+                $query->where($params['type']['field'], 'LIKE',  "%{$params['type']['value']}%");
+            }
+            if ($params['purpose']['value'] !== "all") {
+                $query->where($params['purpose']['field'], 'LIKE',  "%{$params['purpose']['value']}%");
+            }
+            if ($params['keyword']['value'] !== "") {
+                // if ($params['keyword']['field'] == "keyword") {
+                $query->where(function ($query) use ($params) {
+                    foreach ($this->fieldSearchAccepted as $column) {
+                        $query->orWhere($column, 'LIKE',  "%{$params['keyword']['value']}%");
+                    }
+                });
+                // } else if (in_array($params['keyword']['field'], $this->fieldSearchAccepted)) {
+                //     $query->where($params['keyword']['field'], 'LIKE',  "%{$params['keyword']['value']}%");
+                // }
+            }
+           
+
+
+
+            $result = $query->get()/* ->toArray() */;
         }
 
 
@@ -118,8 +145,9 @@ class PropertyModel extends AdminModel
             $params['design']     = $this->uploadThumb($params['design']);
             $params['album']      = json_encode(array_values($this->uploadThumbs($params['album'])));
             $params['slug']       = Str::slug($params['name']) . '-' . Carbon::now()->timestamp;
-            $params['type_slug']  = Str::slug($params['type']);
+            $params['type_slug']  = Str::slug($params['category']);
             $params['city_slug']  = Str::slug($params['city']);
+            $params['user_id']    = $params['idUser'];
 
             // dd($this->prepareParams($params));
             self::insert($this->prepareParams($params));
@@ -138,7 +166,7 @@ class PropertyModel extends AdminModel
 
 
             if (!empty($params['album'])) {
-                if($params['thumb_album'] != ''){
+                if ($params['thumb_album'] != '') {
 
                     $album =  json_decode($params['thumb_album'], true);
                     foreach ($album as $key => $value) {
@@ -148,6 +176,7 @@ class PropertyModel extends AdminModel
                 }
             }
             $params['slug']       = Str::slug($params['name']) . '-' . Carbon::now()->timestamp;
+            $params['city_slug']  = Str::slug($params['city']);
             $params['updated_by']   = "kerry";
             $params['updated_at']   = date(config('zvn.format.db'));
             self::where('id', $params['id'])->update($this->prepareParams($params));
@@ -159,11 +188,11 @@ class PropertyModel extends AdminModel
         if ($options['task'] == 'delete-item') {
 
             $item   = self::getItem($params, ['task' => 'get-thumb']); // 
-          
+
             $this->deleteThumb($item['image']);
             $this->deleteThumb($item['design']);
 
-            if($item['album'] != ''){
+            if ($item['album'] != '') {
 
                 $album = json_decode($item['album']);
                 foreach ($album as $val) {

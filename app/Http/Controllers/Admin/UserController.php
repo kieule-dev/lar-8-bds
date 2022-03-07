@@ -53,8 +53,10 @@ class UserController extends Controller
 
     public function save(MainRequest $request)
     {
+        // dd($request);
         if ($request->method() == 'POST') {
             $params = $request->all();
+
 
             $task   = "add-item";
             $notify = "Add success element!";
@@ -64,6 +66,11 @@ class UserController extends Controller
                 $notify = "Update success element!";
             }
             $this->model->saveItem($params, ['task' => $task]);
+
+            if(isset($params['task'])){
+            return redirect()->route('home')->with("zvn_notify", $notify);
+
+            }
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
         }
     }

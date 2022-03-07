@@ -14,15 +14,17 @@
             </div>
         </div>
         <div class="page-banner-image wow fadeInRight" data-wow-delay="300ms" data-wow-duration="2000ms">
-            <img src="{{ asset('assets/images/page-banner.png') }}" alt="image">
+            <img src="{{ asset('images/page-banner.png') }}" alt="image">
         </div>
     </div>
     <div class="login-area ptb-100">
         <div class="container">
             <div class="login-form">
                 {{-- <div class="card fat"> --}}
+
                     <div class="card-body">
                         <h4 class="card-title kk_1231">Log in</h4>
+                         @include ('news.templates.zvn_notify')
                         @include ('news.templates.error')
                         @include ('news.templates.alert')
                         {!! Form::open([

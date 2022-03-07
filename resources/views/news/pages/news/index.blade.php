@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="page-banner-image wow fadeInRight" data-wow-delay="300ms" data-wow-duration="2000ms">
-        <img src="{{ asset('assets/images/page-banner.png') }}" alt="image">
+        <img src="{{ asset('images/page-banner.png') }}" alt="image">
     </div>
 </div>
 
@@ -32,14 +32,14 @@
                             <a href="{{--    --}}"><img src="{{ asset('images/article') }}/{{ $item->image }}"
                                 style="height: 320px !important;" alt="{{ $item->name }}"></a>
                             <div class="blog-content">
-                                <span><a href="{{--      --}}">{{ $item->category->name }}</a></span>
+                                <span><a href="    ">{{ $item->category->name }}</a></span>
                                 <h3>
                                     <a href="{{--    --}}">{{ $item->name }}</a>
                                 </h3>
                             </div>
                             <div class="blog-bottom-content d-flex justify-content-between align-items-center">
                                 <div class="blog-author d-flex align-items-center">
-                                    <img src="{{ asset('upload/user') }}/{{ $item->user->profile_path }}" class="rounded-circle" alt="{{ $item->user->name }}">
+                                    <img src="{{ asset('images/user') }}/{{ $item->user->avatar }}" class="rounded-circle" alt="{{ $item->user->name }}">
                                     <span><a href="#">{{ $item->user->name }}</a></span>
                                 </div>
                                 <p><i class='bx bx-calendar'></i>{{ $item->created_at->format('d/m/Y') }}</p>
@@ -59,7 +59,7 @@
                         <div class="d-table-cell">
                             <div class="container">
                                 <div class="error-content">
-                                    <h3>Không thể tìm thấy tin tức bạn muốn</h3>
+                                    <h3>Can't find the news you want </h3>
                                     <a href="news" class="default-btn">Tin tức<span></span></a>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                 <aside class="widget-area">
                     <div class="widget widget_search">
                         <h3 class="widget-title">Search</h3>
-                        <form class="search-form" action="{{-- {{ route('news.search') }} --}}" method="GET">
+                        <form class="search-form" action="{{ route('news.search') }}" method="GET">
                             <input type="search" name="search" class="search-field" placeholder="Enter keywords">
                             <button type="submit"><i class='bx bx-search'></i></button>
                         </form>
@@ -81,7 +81,9 @@
                         <h3 class="widget-title">Category</h3>
                         <ul>
                             @foreach ($categories as $item)
-                            <li><a href="{{-- {{ route('news.category',['slug' => $item->slug]) }} --}}">{{ $item->name }}</a><span>{{ $item->post->count() }}</span></li>                                
+                            <li>
+                                <a href="{{ route('news.category',['slug' => $item->slug]) }}">{{ $item->name }}</a><span>{{ $item->post->count() }}</span>
+                            </li>                                
                             @endforeach
                         </ul>
                     </div>

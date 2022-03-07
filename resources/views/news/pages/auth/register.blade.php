@@ -9,13 +9,13 @@
                 <li>
                     <a href="/">Home</a>
                 </li>
-                {{-- <li>Trang</li> --}}
+             
                 <li>register</li>
             </ul>
         </div>
     </div>
     <div class="page-banner-image wow fadeInRight" data-wow-delay="300ms" data-wow-duration="2000ms">
-        <img src="{{ asset('assets/images/page-banner.png') }}" alt="image">
+        <img src="{{ asset('images/page-banner.png') }}" alt="image">
     </div>
 </div>
 
@@ -24,11 +24,11 @@
     <div class="container">
         <div class="register-form">
             <h2>Register</h2>
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('home/save') }}">
                 @csrf
                 <div class="form-group">
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                     name="name" value="{{ old('name') }}" required autocomplete="name" 
+                     name="username" value="{{ old('username') }}" required autocomplete="name" 
                      autofocus class="form-control" placeholder="First and last name">
                      @error('name')
                      <span class="invalid-feedback" role="alert">
@@ -36,6 +36,20 @@
                      </span>
                  @enderror
                 </div>
+
+                <div class="form-group">
+                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror"
+                     name="phone" value="{{ old('phone') }}" required autocomplete="phone" 
+                     autofocus class="form-control" placeholder="Phone">
+                     @error('phone')
+                     <span class="invalid-feedback" role="alert">
+                         <strong>{{ $message }}</strong>
+                     </span>
+                 @enderror
+                </div>
+
+
+
                 <div class="form-group">
                     <input tid="email" type="email" class="form-control @error('email') is-invalid @enderror" 
                     name="email" value="{{ old('email') }}" required autocomplete="email" 
@@ -62,6 +76,8 @@
                     class="form-control" placeholder="Password confirmation">
                     
                 </div>
+                <input type="hidden" name="task" value="front-end">
+                <input type="hidden" name="id" value="">
                 <button type="submit" class="default-btn">Confirm <span></span></button>
             </form>
         </div>

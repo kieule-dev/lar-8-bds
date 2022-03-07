@@ -87,6 +87,18 @@ class Template
         );
         return $xhtml;
     }
+    public static function showItemHistory1($time)
+    {
+
+
+        $xhtml = sprintf(
+            '
+            <p><i class="fa fa-clock-o "></i> %s</p>',
+
+            date(Config::get('zvn.format.long_time'), strtotime($time))
+        );
+        return $xhtml;
+    }
 
     public static function showItemStatus($controllerName, $id, $statusValue)
     {
@@ -140,7 +152,7 @@ class Template
         return $xhtml;
     }
 
-    public static function showItemThumb1($controllerName, $thumbName, $thumbAlt, $w = 250, $h = 150)
+    public static function showItemThumb1($controllerName, $thumbName, $thumbAlt, $w = 200, $h = 100)
     {
 
         // dd($thumbAlt);
@@ -183,7 +195,7 @@ class Template
             foreach ($thumbName as $value) {
 
                 $xhtml .= sprintf(
-                    '<img src="%s" alt="%s" class="zvn-thumb">',
+                    '<img src="%s" alt="%s" class="zvn-thumb2">',
                     asset("images/$controllerName/$value"),
                     $thumbAlt
                 );

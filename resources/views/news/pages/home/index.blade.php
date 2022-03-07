@@ -2,16 +2,23 @@
 @section('content')
 
 
-    @include('news.pages.home.child-index.main-slides-area')
-    @include('news.pages.home.child-index.partner-area')
-    @include('news.pages.home.child-index.featured-area-two')
-    @include('news.pages.home.child-index.facilities')
+    @include('news.pages.home.child-index.slider')
 
-    @include('news.pages.home.child-index.neighborhood-area')
-    @include('news.pages.home.child-index.agents-area')
-    @include('news.pages.home.child-index.nhanxet-khachhang')
+    @include('news.pages.home.child-index.logo-doi-tac')
 
-    @include('news.pages.home.child-index.blog-area')
+    @include('news.pages.home.child-index.sp-new')
 
+    @include('news.pages.home.child-index.logo-service')
 
+    @include('news.pages.home.child-index.category')
+
+    @include('news.pages.home.child-index.city')
+
+    @include('news.pages.home.child-index.nguoi-moi-gioi')
+
+    @include('news.pages.home.child-index.review')
+
+    @include('news.pages.home.child-index.blog')
+
+    
 @endsection

@@ -15,3 +15,4 @@
 <script src="{{ asset('assets/js/contact-form-script.js') }}"></script>
 <script src="{{ asset('assets/js/wow.min.js') }}"></script>
 <script src="{{ asset('assets/js/main.js') }}"></script>
+<script src="{{ asset('news/js/my-js.js') }}"></script>

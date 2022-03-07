@@ -10,6 +10,7 @@ use App\Models\Setting;
 use App\Models\Category;
 use App\Models\CommentPost;
 use Illuminate\Http\Request;
+use App\Http\Requests\NewsRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,13 +28,13 @@ class NewsController extends Controller
     }
 
     public function category($slug) {
-        $category = Category::where('slug',$slug)->first();
-        $posts = Post::where('category_id',$category->id)->paginate(9);
+        $category   = Category::where('slug',$slug)->first();
+        $posts      = Post::where('category_id',$category->id)->paginate(9);
         $categories = Category::all();
-        $tags = Tag::all();
-        $hots = Post::orderBy('view','DESC')->limit(5)->get();
+        $tags       = Tag::all();
+        $hots       = Post::orderBy('view','DESC')->limit(5)->get();
 
-        return view('news',compact('posts','categories','tags','hots'));
+        return view('news.pages.news.index',compact('posts','categories','tags','hots'));
     }
 
     public function tag($slug) {
@@ -47,23 +48,24 @@ class NewsController extends Controller
     }
 
     public function detail ($slug) {
-        $post = Post::where('slug',$slug)->first();
+        $post       = Post::where('slug',$slug)->first();
         $categories = Category::all();
-        $tags = PostTag::where('post_id',$post->id)->get();
-        $tag_total = Tag::all();
-        $hots = Post::orderBy('view','DESC')->limit(5)->get();
+        $tags       = PostTag::where('post_id',$post->id)->get();
+        $tag_total  = Tag::all();
+      
+        $hots       = Post::orderBy('view','DESC')->limit(5)->get();
         $post->increment('view');
         $comments = CommentPost::where('post_id',$post->id)->get();
-        return view('news-detail',compact('post','tags','categories','tag_total','hots','comments'));
+        return view('news.pages.news.detail',compact('post','tags','categories','tag_total','hots','comments'));
     }
 
     public function search (Request $request) {
-        $posts = Post::where('name','LIKE','%'.$request->search.'%')->paginate(9);
+        $posts      = Post::where('name','LIKE','%'.$request->search.'%')->paginate(9);
         $categories = Category::all();
-        $tags = Tag::all();
-        $hots = Post::orderBy('view','DESC')->limit(5)->get();
+        $tags       = Tag::all();
+        $hots       = Post::orderBy('view','DESC')->limit(5)->get();
 
-        return view('news',compact('posts','categories','tags','hots'));
+        return view('news.pages.news.index',compact('posts','categories','tags','hots'));
     }
 
     public function contact () {
@@ -84,10 +86,11 @@ class NewsController extends Controller
         return response()->json();
     }
 
-    public function comment(Request $request) {
+    public function comment(NewsRequest $request) {
+     
         $comment = new CommentPost();
-        if (Auth::check())
-            $comment->name = Auth::user()->name;
+        if (session('userInfo') != null)
+            $comment->name = session('userInfo')['username'];
         else
             $comment->name = $request->name;
         $comment->comment = $request->comment;
